@@ -31,8 +31,8 @@ function App() {
   return (
     <EntityProvider>
       <PageTitleProvider>
-        <TourProvider>
-          <Router>
+        <Router>
+          <TourProvider>
             <SidebarProvider>
               <div className="flex min-h-screen bg-white w-full">
                 <AppSidebar />
@@ -62,8 +62,8 @@ function App() {
               <WelcomeModal />
               <TourOrchestrator />
             </SidebarProvider>
-          </Router>
-        </TourProvider>
+          </TourProvider>
+        </Router>
       </PageTitleProvider>
     </EntityProvider>
   );
