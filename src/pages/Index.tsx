@@ -29,7 +29,7 @@ const Index = () => {
             Revolutionize your recruitment with AI-powered agents that source, submit, and engage candidates automatically.
           </p>
           
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-3 gap-6 mb-8 agent-cards-container">
             <Card className="p-6 text-center border-2 hover:border-primary transition-colors">
               <Target className="w-12 h-12 mx-auto mb-4 text-primary" />
               <h3 className="font-semibold mb-2">Sourcing Agent</h3>

@@ -96,3 +96,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Tour highlight animation */
+@layer utilities {
+  @keyframes tourPulse {
+    0%, 100% { 
+      box-shadow: 0 0 0 4px hsl(var(--primary) / 0.3);
+    }
+    50% { 
+      box-shadow: 0 0 0 8px hsl(var(--primary) / 0.2);
+    }
+  }
+
+  .tour-highlight {
+    position: relative;
+    z-index: 50;
+    animation: tourPulse 2s ease-in-out infinite;
+    border-radius: 0.5rem;
+  }
+}

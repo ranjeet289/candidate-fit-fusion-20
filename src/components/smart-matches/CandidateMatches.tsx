@@ -218,7 +218,7 @@ export default function CandidateMatches({ handleAddToOutreach }: CandidateMatch
       </div>
       
       {/* Job Selection */}
-      <div className="mb-6">
+      <div className="mb-6 candidate-selector">
         <label className="block font-semibold mb-2">Select Job Position</label>
         <Select value={selectedJobId} onValueChange={setSelectedJobId}>
           <SelectTrigger className="w-full">

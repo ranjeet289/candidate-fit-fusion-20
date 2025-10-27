@@ -561,7 +561,7 @@ export default function SourcingAgent() {
                 </div>
 
                 <div className="space-y-6 mb-8">
-                  <div>
+                  <div className="job-selector">
                     <label className="block font-semibold mb-2">Select Job Position</label>
                     <Select value={selectedJob} onValueChange={handleJobSelect}>
                       <SelectTrigger className="w-full">

@@ -270,7 +270,7 @@ export default function OutreachAgent() {
                 When enabled, all new candidates added to the pipeline will automatically receive your outreach via email or LinkedIn DMs using your recruiter account.
               </div>
             </div>
-            <div className="flex items-center gap-4 mt-3 md:mt-0">
+            <div className="flex items-center gap-4 mt-3 md:mt-0 automation-toggle">
               <Switch
                 checked={automationEnabled}
                 onCheckedChange={setAutomationEnabled}
