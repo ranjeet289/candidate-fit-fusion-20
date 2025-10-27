@@ -1,8 +1,7 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from './components/app-sidebar';
-import { Bell, Search, Settings } from 'lucide-react';
+import { Bell, HelpCircle, RotateCcw, BookOpen, ExternalLink } from 'lucide-react';
 import Index from './pages/Index';
 import Overview from './pages/Overview';
 import Jobs from './pages/Jobs';
@@ -12,57 +11,78 @@ import SourcingAgent from './pages/SourcingAgent';
 import OutreachAgent from './pages/OutreachAgent';
 import RecommendationAgent from './pages/RecommendationAgent';
 import ATSSearch from './pages/ATSSearch';
-import AIRecruiter from './pages/AIRecruiter';
 import AIAgentsOverview from './pages/AIAgentsOverview';
 import NotFound from './pages/NotFound';
 import { EntityProvider } from './context/EntityContext';
 import { PageTitleProvider, usePageTitle } from './hooks/use-page-title';
 import { Toaster } from './components/ui/toaster';
-import { TourProvider } from './context/TourContext';
+import { TourProvider, useTourContext } from './context/TourContext';
 import { TourOrchestrator } from './components/onboarding/TourOrchestrator';
 import { WelcomeModal } from './components/onboarding/WelcomeModal';
 import { TourBanner } from './components/onboarding/TourBanner';
 import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
-import { HelpCircle, RotateCcw, BookOpen, ExternalLink } from 'lucide-react';
-import { useTourContext } from './context/TourContext';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import CheckEmail from './pages/auth/CheckEmail';
+import ResetPassword from './pages/auth/ResetPassword';
+import Onboarding from './pages/auth/Onboarding';
+import Profile from './pages/Profile';
+import UserMenu from './components/layout/UserMenu';
 
 function App() {
-  console.log('App.tsx: App component rendering');
   return (
     <EntityProvider>
       <PageTitleProvider>
         <Router>
-          <TourProvider>
-            <SidebarProvider>
-              <div className="flex min-h-screen bg-white w-full">
-                <AppSidebar />
-                <main className="flex-1 overflow-auto">
-                  {/* Top header with page title and notification icons */}
-                  <HeaderWithTitle />
-                  <TourBanner />
-                  
-                  {/* Page content */}
-                  <div className="flex-1">
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/overview" element={<Overview />} />
-                      <Route path="/jobs" element={<Jobs />} />
-                      <Route path="/candidates" element={<Candidates />} />
-                      <Route path="/ats-search" element={<ATSSearch />} />
-                      <Route path="/users" element={<Users />} />
-                      <Route path="/sourcing-agent" element={<SourcingAgent />} />
-                      <Route path="/outreach-agent" element={<OutreachAgent />} />
-                      <Route path="/recommendation-agent" element={<RecommendationAgent />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </div>
-                </main>
-              </div>
-              <Toaster />
-              <WelcomeModal />
-              <TourOrchestrator />
-            </SidebarProvider>
-          </TourProvider>
+          <AuthProvider>
+            <Routes>
+              {/* Auth Routes */}
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/auth/signup" element={<Signup />} />
+              <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+              <Route path="/auth/check-email" element={<CheckEmail />} />
+              <Route path="/auth/reset-password" element={<ResetPassword />} />
+              <Route path="/auth/onboarding" element={<Onboarding />} />
+
+              {/* Protected Routes */}
+              <Route path="/*" element={
+                <ProtectedRoute>
+                  <TourProvider>
+                    <SidebarProvider>
+                      <div className="flex min-h-screen bg-white w-full">
+                        <AppSidebar />
+                        <main className="flex-1 overflow-auto">
+                          <HeaderWithTitle />
+                          <TourBanner />
+                          <div className="flex-1">
+                            <Routes>
+                              <Route path="/" element={<Index />} />
+                              <Route path="/overview" element={<Overview />} />
+                              <Route path="/jobs" element={<Jobs />} />
+                              <Route path="/candidates" element={<Candidates />} />
+                              <Route path="/ats-search" element={<ATSSearch />} />
+                              <Route path="/users" element={<Users />} />
+                              <Route path="/sourcing-agent" element={<SourcingAgent />} />
+                              <Route path="/outreach-agent" element={<OutreachAgent />} />
+                              <Route path="/recommendation-agent" element={<RecommendationAgent />} />
+                              <Route path="/profile" element={<Profile />} />
+                              <Route path="*" element={<NotFound />} />
+                            </Routes>
+                          </div>
+                        </main>
+                      </div>
+                      <Toaster />
+                      <WelcomeModal />
+                      <TourOrchestrator />
+                    </SidebarProvider>
+                  </TourProvider>
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </AuthProvider>
         </Router>
       </PageTitleProvider>
     </EntityProvider>
@@ -112,12 +132,11 @@ function HeaderWithTitle() {
             </div>
           </PopoverContent>
         </Popover>
-        <button className="p-2 text-muted-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors">
+        <button className="p-2 text-muted-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors relative">
           <Bell className="w-5 h-5" />
+          <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
         </button>
-        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center ml-2">
-          <span className="text-white text-sm font-medium">U</span>
-        </div>
+        <UserMenu />
       </div>
     </div>
   );
