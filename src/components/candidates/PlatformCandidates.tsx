@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Table, List, Search, Filter } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
+import { useTourContext } from "@/context/TourContext";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -85,6 +86,14 @@ export default function PlatformCandidates() {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [stageFilter, setStageFilter] = useState('all');
+  const { tourTriggeredSheet, setTourTriggeredSheet } = useTourContext();
+  
+  // Listen for tour-triggered sheet opening
+  useEffect(() => {
+    if (tourTriggeredSheet === 'submitCandidate') {
+      setShowSubmitForm(true);
+    }
+  }, [tourTriggeredSheet]);
 
   // Filter candidates based on search term and stage
   const filteredCandidates = mockCandidates.filter(candidate => {
@@ -133,7 +142,7 @@ export default function PlatformCandidates() {
           </div>
           <Sheet open={showSubmitForm} onOpenChange={setShowSubmitForm}>
             <SheetTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button className="bg-blue-600 hover:bg-blue-700 submit-candidate-button">
                 <Plus className="w-4 h-4 mr-2" />
                 Submit Candidate
               </Button>

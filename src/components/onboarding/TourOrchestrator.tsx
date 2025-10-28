@@ -5,7 +5,15 @@ import { tourSteps } from '@/lib/tour-steps';
 import { TourFloatingCard } from './TourFloatingCard';
 
 export function TourOrchestrator() {
-  const { isTourActive, currentStep, tourMode, nextStep, prevStep, skipTour } = useTourContext();
+  const { 
+    isTourActive, 
+    currentStep, 
+    tourMode, 
+    nextStep, 
+    prevStep, 
+    skipTour, 
+    setTourTriggeredSheet 
+  } = useTourContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [cardPosition, setCardPosition] = useState({ top: 100, left: 100 });
@@ -19,8 +27,17 @@ export function TourOrchestrator() {
       if (location.pathname !== currentTourStep.route) {
         navigate(currentTourStep.route);
       }
+      
+      // Trigger auto-open sheet if specified
+      if (currentTourStep.autoOpenSheet) {
+        setTimeout(() => {
+          setTourTriggeredSheet(currentTourStep.autoOpenSheet!);
+        }, 500);
+      } else {
+        setTourTriggeredSheet(null);
+      }
     }
-  }, [isTourActive, currentStep, currentTourStep, navigate, location.pathname]);
+  }, [isTourActive, currentStep, currentTourStep, navigate, location.pathname, setTourTriggeredSheet]);
 
   // Find and highlight target element
   useEffect(() => {

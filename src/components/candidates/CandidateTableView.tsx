@@ -1,9 +1,9 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { User, MoreHorizontal, Eye, Copy, Linkedin, Download, Mail } from "lucide-react";
 import { toast } from "sonner";
+import StatusBadge from "./StatusBadge";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -30,20 +30,6 @@ export default function CandidateTableView({ candidates, onViewProfile }: Candid
     toast.success("Email copied to clipboard");
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-green-100 text-green-700 border-green-200';
-      case 'Submitted to AM': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'Submitted to Client': return 'bg-purple-100 text-purple-700 border-purple-200';
-      case 'Sendout': return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'Next Interview': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'Final Interview': return 'bg-indigo-100 text-indigo-700 border-indigo-200';
-      case 'Offer': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      case 'Rejected': return 'bg-red-100 text-red-700 border-red-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
   const getFitScoreColor = (score: number) => {
     if (score >= 9) return 'text-green-600 font-semibold';
     if (score >= 8) return 'text-blue-600 font-semibold';
@@ -62,7 +48,7 @@ export default function CandidateTableView({ candidates, onViewProfile }: Candid
               <TableHead className="text-gray-600 font-medium">Recruiter</TableHead>
               <TableHead className="text-gray-600 font-medium">Job ID</TableHead>
               <TableHead className="text-gray-600 font-medium">Fit Score</TableHead>
-              <TableHead className="text-gray-600 font-medium">Stage</TableHead>
+              <TableHead className="text-gray-600 font-medium candidate-stage-column">Stage</TableHead>
               <TableHead className="text-gray-600 font-medium">Date Added</TableHead>
               <TableHead className="text-gray-600 font-medium">Submit</TableHead>
               <TableHead className="text-gray-600 font-medium">Actions</TableHead>
@@ -117,10 +103,8 @@ export default function CandidateTableView({ candidates, onViewProfile }: Candid
                     {candidate.fitScore}/10
                   </span>
                 </TableCell>
-                <TableCell className="py-4">
-                  <Badge className={`${getStatusColor(candidate.stage)} text-xs px-2 py-1`}>
-                    {candidate.stage}
-                  </Badge>
+                <TableCell className="py-4 candidate-stage-column">
+                  <StatusBadge status={candidate.stage} className="text-xs px-2 py-1" />
                 </TableCell>
                 <TableCell className="py-4 text-sm text-gray-600">{candidate.dateAdded}</TableCell>
                 <TableCell className="py-4">

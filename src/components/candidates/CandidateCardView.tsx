@@ -1,9 +1,9 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { User, MapPin, Calendar, Star, Eye, Linkedin, Copy, Download, Mail } from "lucide-react";
 import { toast } from "sonner";
+import StatusBadge from "./StatusBadge";
 
 interface CandidateCardViewProps {
   candidates: any[];
@@ -14,20 +14,6 @@ export default function CandidateCardView({ candidates, onViewProfile }: Candida
   const copyEmail = (email: string) => {
     navigator.clipboard.writeText(email);
     toast.success("Email copied to clipboard");
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Submitted to AM': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Submitted to Client': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'Sendout': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Next Interview': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Final Interview': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'Offer': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'Rejected': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
   };
 
   const getFitScoreColor = (score: number) => {
@@ -74,9 +60,7 @@ export default function CandidateCardView({ candidates, onViewProfile }: Candida
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <Badge className={`${getStatusColor(candidate.stage)} text-xs`}>
-                {candidate.stage}
-              </Badge>
+              <StatusBadge status={candidate.stage} className="text-xs" />
               <Button variant="outline" size="sm" className="text-xs">
                 Submit now
               </Button>

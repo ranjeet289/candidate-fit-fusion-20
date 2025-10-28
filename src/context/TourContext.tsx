@@ -14,6 +14,8 @@ interface TourContextType {
   skipTour: () => void;
   restartTour: () => void;
   totalSteps: number;
+  tourTriggeredSheet: string | null;
+  setTourTriggeredSheet: (sheet: string | null) => void;
 }
 
 const TourContext = createContext<TourContextType | undefined>(undefined);
@@ -23,8 +25,9 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [tourMode, setTourMode] = useState<TourMode>('auto');
   const [hasSeenTour, setHasSeenTour] = useState(false);
+  const [tourTriggeredSheet, setTourTriggeredSheet] = useState<string | null>(null);
   const navigate = useNavigate();
-  const totalSteps = 6;
+  const totalSteps = 7;
 
   useEffect(() => {
     const completed = localStorage.getItem('synapse_tour_completed');
@@ -98,6 +101,8 @@ export function TourProvider({ children }: { children: ReactNode }) {
         skipTour,
         restartTour,
         totalSteps,
+        tourTriggeredSheet,
+        setTourTriggeredSheet,
       }}
     >
       {children}

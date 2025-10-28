@@ -1,4 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
+import { useTourContext } from '@/context/TourContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -8,11 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function UserMenu() {
   const { user, logout } = useAuth();
+  const { restartTour } = useTourContext();
   const navigate = useNavigate();
 
   if (!user) return null;
@@ -41,6 +43,11 @@ export default function UserMenu() {
         <DropdownMenuItem onClick={() => navigate('/settings')}>
           <Settings className="mr-2 h-4 w-4" />
           Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={restartTour}>
+          <Sparkles className="mr-2 h-4 w-4" />
+          Take Product Tour
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className="text-destructive">

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTourContext } from './TourContext';
 
 export interface User {
   id: string;
@@ -28,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const tourContext = useTourContext();
 
   useEffect(() => {
     // Check for existing session in localStorage
@@ -61,6 +63,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('synapse_user', JSON.stringify(mockUser));
     setUser(mockUser);
     setIsLoading(false);
+    
+    // Check if user needs to see the tour
+    const hasSeenTour = localStorage.getItem('synapse_tour_completed') === 'true';
+    if (!hasSeenTour && mockUser.hasCompletedOnboarding && tourContext) {
+      setTimeout(() => {
+        tourContext.startTour('auto');
+      }, 1000);
+    }
     
     return {};
   };
