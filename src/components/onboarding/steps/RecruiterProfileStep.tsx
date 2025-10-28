@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Award, Star } from 'lucide-react';
 import { useState } from 'react';
 
 const schema = z.object({
@@ -49,6 +49,7 @@ export default function RecruiterProfileStep({ onNext, onPrevious, formData }: R
   });
 
   const selectedExperience = watch('experience');
+  const bioLength = watch('bio')?.length || 0;
 
   const toggleSpecialization = (spec: string) => {
     const newSpecs = selectedSpecs.includes(spec)
@@ -59,24 +60,27 @@ export default function RecruiterProfileStep({ onNext, onPrevious, formData }: R
   };
 
   return (
-    <form onSubmit={handleSubmit(onNext)} className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-foreground mb-2">
+    <form onSubmit={handleSubmit(onNext)} className="space-y-8">
+      <div className="text-center space-y-3">
+        <h2 className="text-3xl font-bold text-foreground">
           Your Recruiting Expertise
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-lg">
           Help us understand your recruitment background
         </p>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="experience">Years of Experience</Label>
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="experience" className="text-base flex items-center gap-2">
+            <Award className="h-4 w-4 text-primary" />
+            Years of Experience
+          </Label>
           <Select 
             value={selectedExperience} 
             onValueChange={(value) => setValue('experience', value)}
           >
-            <SelectTrigger className="mt-1">
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="Select your experience level" />
             </SelectTrigger>
             <SelectContent>
@@ -88,61 +92,65 @@ export default function RecruiterProfileStep({ onNext, onPrevious, formData }: R
             </SelectContent>
           </Select>
           {errors.experience && (
-            <p className="text-sm text-destructive mt-1">{errors.experience.message}</p>
+            <p className="text-sm text-destructive">{errors.experience.message}</p>
           )}
         </div>
 
-        <div>
-          <Label>Specializations</Label>
-          <p className="text-sm text-muted-foreground mb-3">
-            Select all areas you specialize in
+        <div className="space-y-3">
+          <Label className="text-base flex items-center gap-2">
+            <Star className="h-4 w-4 text-primary" />
+            Specializations
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            Click to select all areas you specialize in
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 p-4 border rounded-lg bg-muted/30">
             {availableSpecializations.map((spec) => (
               <Badge
                 key={spec}
                 variant={selectedSpecs.includes(spec) ? "default" : "outline"}
-                className="cursor-pointer hover:opacity-80 transition-opacity"
+                className="cursor-pointer hover:scale-105 transition-all text-sm py-2 px-4"
                 onClick={() => toggleSpecialization(spec)}
               >
                 {spec}
-                {selectedSpecs.includes(spec) && (
-                  <X className="ml-1 h-3 w-3" />
-                )}
               </Badge>
             ))}
           </div>
           {errors.specializations && (
-            <p className="text-sm text-destructive mt-1">{errors.specializations.message}</p>
+            <p className="text-sm text-destructive">{errors.specializations.message}</p>
           )}
         </div>
 
-        <div>
-          <Label htmlFor="bio">About You</Label>
-          <p className="text-sm text-muted-foreground mb-2">
+        <div className="space-y-2">
+          <Label htmlFor="bio" className="text-base">
+            About You
+          </Label>
+          <p className="text-sm text-muted-foreground">
             Tell us about your recruiting approach and what makes you unique
           </p>
           <Textarea
             id="bio"
             placeholder="I'm passionate about connecting talented individuals with amazing opportunities..."
             {...register('bio')}
-            className="mt-1 min-h-[120px]"
+            className="min-h-[140px] text-base"
           />
-          <p className="text-xs text-muted-foreground mt-1">
-            {watch('bio')?.length || 0} / 500 characters
-          </p>
+          <div className="flex justify-between items-center">
+            <p className={`text-xs ${bioLength < 20 ? 'text-destructive' : bioLength > 500 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              {bioLength} / 500 characters {bioLength < 20 && '(minimum 20)'}
+            </p>
+          </div>
           {errors.bio && (
-            <p className="text-sm text-destructive mt-1">{errors.bio.message}</p>
+            <p className="text-sm text-destructive">{errors.bio.message}</p>
           )}
         </div>
       </div>
 
       <div className="flex justify-between pt-6">
-        <Button type="button" variant="outline" onClick={onPrevious}>
+        <Button type="button" variant="outline" onClick={onPrevious} size="lg">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Previous
         </Button>
-        <Button type="submit">
+        <Button type="submit" size="lg">
           Next
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Linkedin, Globe, Briefcase } from 'lucide-react';
 
 const schema = z.object({
   linkedinUrl: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
@@ -34,38 +34,50 @@ export default function PersonalInfoStep({ onNext, onPrevious, formData }: Perso
   const selectedIndustry = watch('industry');
 
   return (
-    <form onSubmit={handleSubmit(onNext)} className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-foreground mb-2">
+    <form onSubmit={handleSubmit(onNext)} className="space-y-8">
+      <div className="text-center space-y-3">
+        <h2 className="text-3xl font-bold text-foreground">
           Tell us about yourself
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-lg">
           Help us personalize your experience
         </p>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="linkedinUrl">LinkedIn Profile (Optional)</Label>
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="linkedinUrl" className="text-base flex items-center gap-2">
+            <Linkedin className="h-4 w-4 text-primary" />
+            LinkedIn Profile
+            <span className="text-muted-foreground text-sm font-normal">(Optional)</span>
+          </Label>
           <Input
             id="linkedinUrl"
             type="url"
             placeholder="https://linkedin.com/in/yourprofile"
             {...register('linkedinUrl')}
-            className="mt-1"
+            className="h-12 text-base"
           />
           {errors.linkedinUrl && (
-            <p className="text-sm text-destructive mt-1">{errors.linkedinUrl.message}</p>
+            <p className="text-sm text-destructive flex items-center gap-1">
+              {errors.linkedinUrl.message}
+            </p>
           )}
+          <p className="text-sm text-muted-foreground">
+            We'll never post anything without your permission
+          </p>
         </div>
 
-        <div>
-          <Label htmlFor="region">Region</Label>
+        <div className="space-y-2">
+          <Label htmlFor="region" className="text-base flex items-center gap-2">
+            <Globe className="h-4 w-4 text-primary" />
+            Region
+          </Label>
           <Select 
             value={selectedRegion} 
             onValueChange={(value) => setValue('region', value)}
           >
-            <SelectTrigger className="mt-1">
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="Select your region" />
             </SelectTrigger>
             <SelectContent>
@@ -77,17 +89,20 @@ export default function PersonalInfoStep({ onNext, onPrevious, formData }: Perso
             </SelectContent>
           </Select>
           {errors.region && (
-            <p className="text-sm text-destructive mt-1">{errors.region.message}</p>
+            <p className="text-sm text-destructive">{errors.region.message}</p>
           )}
         </div>
 
-        <div>
-          <Label htmlFor="industry">Primary Industry</Label>
+        <div className="space-y-2">
+          <Label htmlFor="industry" className="text-base flex items-center gap-2">
+            <Briefcase className="h-4 w-4 text-primary" />
+            Primary Industry
+          </Label>
           <Select 
             value={selectedIndustry} 
             onValueChange={(value) => setValue('industry', value)}
           >
-            <SelectTrigger className="mt-1">
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="Select your industry" />
             </SelectTrigger>
             <SelectContent>
@@ -99,17 +114,17 @@ export default function PersonalInfoStep({ onNext, onPrevious, formData }: Perso
             </SelectContent>
           </Select>
           {errors.industry && (
-            <p className="text-sm text-destructive mt-1">{errors.industry.message}</p>
+            <p className="text-sm text-destructive">{errors.industry.message}</p>
           )}
         </div>
       </div>
 
       <div className="flex justify-between pt-6">
-        <Button type="button" variant="outline" onClick={onPrevious}>
+        <Button type="button" variant="outline" onClick={onPrevious} size="lg">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Previous
         </Button>
-        <Button type="submit">
+        <Button type="submit" size="lg">
           Next
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
