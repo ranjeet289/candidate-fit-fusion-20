@@ -45,12 +45,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock validation
-    if (password.length < 6) {
-      setIsLoading(false);
-      return { error: 'Invalid email or password' };
-    }
 
     const mockUser: User = {
       id: Math.random().toString(36).substr(2, 9),
