@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,21 +10,17 @@ import { toast } from 'sonner';
 import AuthLayout from './AuthLayout';
 import { Loader2 } from 'lucide-react';
 
-const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  remember: z.boolean().optional(),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+interface LoginFormData {
+  email: string;
+  password: string;
+  remember?: boolean;
+}
 
 export default function Login() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  });
+  const { register, handleSubmit } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -51,15 +45,12 @@ export default function Login() {
             <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
-              type="email"
+              type="text"
               placeholder="you@example.com"
               {...register('email')}
               className="mt-1"
               disabled={isLoading}
             />
-            {errors.email && (
-              <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
-            )}
           </div>
 
           <div>
@@ -72,9 +63,6 @@ export default function Login() {
               className="mt-1"
               disabled={isLoading}
             />
-            {errors.password && (
-              <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
-            )}
           </div>
         </div>
 
