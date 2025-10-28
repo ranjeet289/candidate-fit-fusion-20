@@ -1,43 +1,111 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from 'sonner';
 import AuthLayout from './AuthLayout';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+
+const loginSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  remember: z.boolean().optional(),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleGetStarted = () => {
-    navigate('/auth/onboarding');
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    const { error } = await login(data.email, data.password);
+    setIsLoading(false);
+    
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success('Welcome back!');
+    }
   };
 
   return (
     <AuthLayout 
-      title="Welcome to Synapse" 
-      subtitle="Transform your recruitment process with AI-powered intelligence"
+      title="Sign in to your account" 
+      subtitle="Enter your credentials to access your dashboard"
     >
-      <div className="space-y-8 text-center">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mx-auto animate-scale-in">
-          <Sparkles className="h-10 w-10 text-primary animate-pulse" />
-        </div>
-        
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
-          <h3 className="text-2xl font-bold text-foreground">
-            Ready to Get Started?
-          </h3>
-          <p className="text-muted-foreground text-lg max-w-md mx-auto">
-            Let's set up your profile in just a few steps and unlock the full power of AI recruitment.
-          </p>
+          <div>
+            <Label htmlFor="email">Email address</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              {...register('email')}
+              className="mt-1"
+              disabled={isLoading}
+            />
+            {errors.email && (
+              <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              {...register('password')}
+              className="mt-1"
+              disabled={isLoading}
+            />
+            {errors.password && (
+              <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
+            )}
+          </div>
         </div>
 
-        <Button 
-          onClick={handleGetStarted} 
-          size="lg" 
-          className="w-full group"
-        >
-          Get Started
-          <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Checkbox id="remember" {...register('remember')} disabled={isLoading} />
+            <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+              Remember me
+            </Label>
+          </div>
+
+          <Link 
+            to="/auth/forgot-password" 
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Sign in
         </Button>
-      </div>
+
+        <div className="text-center text-sm text-muted-foreground">
+          Don't have an account?{' '}
+          <Link to="/auth/signup" className="font-medium text-primary hover:text-primary/80 transition-colors">
+            Sign up
+          </Link>
+        </div>
+      </form>
     </AuthLayout>
   );
 }

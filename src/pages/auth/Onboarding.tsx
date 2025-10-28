@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { Brain, Check } from 'lucide-react';
 import WelcomeStep from '@/components/onboarding/steps/WelcomeStep';
 import PersonalInfoStep from '@/components/onboarding/steps/PersonalInfoStep';
 import RecruiterProfileStep from '@/components/onboarding/steps/RecruiterProfileStep';
 import PreferencesStep from '@/components/onboarding/steps/PreferencesStep';
 import CompleteStep from '@/components/onboarding/steps/CompleteStep';
-import { ProgressBar } from '@/components/onboarding/ProgressBar';
 
 const steps = [
   { id: 1, name: 'Welcome', component: WelcomeStep },
@@ -53,33 +53,81 @@ export default function Onboarding() {
   const CurrentStepComponent = steps[currentStep - 1].component;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center p-4 py-12">
-      <div className="w-full max-w-5xl space-y-10">
-        {/* Progress Bar */}
-        <div className="animate-fade-in">
-          <ProgressBar currentStep={currentStep - 1} totalSteps={steps.length} />
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center p-6">
+      <div className="w-full max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="h-14 w-14 rounded-xl bg-primary flex items-center justify-center">
+              <Brain className="h-8 w-8 text-primary-foreground" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Welcome to Synapse
+          </h1>
+          <p className="text-muted-foreground">
+            Let's set up your profile in just a few steps
+          </p>
         </div>
 
-        {/* Step Content */}
-        <Card className="shadow-2xl border-primary/10 backdrop-blur-sm animate-fade-in">
-          <CardContent className="p-10 md:p-12">
-            <CurrentStepComponent
-              onNext={handleNext}
-              onPrevious={handlePrevious}
-              onComplete={handleComplete}
-              formData={formData}
-            />
-          </CardContent>
+        {/* Progress Steps */}
+        <div className="flex items-center justify-center mb-8">
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex items-center">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
+                    currentStep > step.id
+                      ? 'bg-primary border-primary text-primary-foreground'
+                      : currentStep === step.id
+                      ? 'border-primary text-primary bg-background'
+                      : 'border-muted text-muted-foreground bg-background'
+                  }`}
+                >
+                  {currentStep > step.id ? (
+                    <Check className="h-5 w-5" />
+                  ) : (
+                    <span className="text-sm font-semibold">{step.id}</span>
+                  )}
+                </div>
+                <span className="text-xs mt-2 text-muted-foreground hidden md:block">
+                  {step.name}
+                </span>
+              </div>
+              {index < steps.length - 1 && (
+                <div
+                  className={`w-12 md:w-24 h-0.5 mx-2 transition-all ${
+                    currentStep > step.id ? 'bg-primary' : 'bg-muted'
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Content Card */}
+        <Card className="p-8">
+          {currentStep === 1 && (
+            <WelcomeStep onNext={handleNext} />
+          )}
+          {currentStep === 2 && (
+            <PersonalInfoStep onNext={handleNext} onPrevious={handlePrevious} formData={formData} />
+          )}
+          {currentStep === 3 && (
+            <RecruiterProfileStep onNext={handleNext} onPrevious={handlePrevious} formData={formData} />
+          )}
+          {currentStep === 4 && (
+            <PreferencesStep onNext={handleNext} onPrevious={handlePrevious} formData={formData} />
+          )}
+          {currentStep === 5 && (
+            <CompleteStep onComplete={handleComplete} formData={formData} />
+          )}
         </Card>
 
         {/* Skip Button */}
         {currentStep < steps.length && (
-          <div className="text-center animate-fade-in">
-            <Button 
-              variant="ghost" 
-              onClick={handleSkip} 
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
+          <div className="text-center mt-4">
+            <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">
               Skip for now
             </Button>
           </div>
