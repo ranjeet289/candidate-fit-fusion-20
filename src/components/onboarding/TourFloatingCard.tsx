@@ -43,6 +43,11 @@ export function TourFloatingCard({
   }, [position]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    // Don't start drag if clicking on a button or interactive element
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    
     if (!cardRef.current) return;
     
     const rect = cardRef.current.getBoundingClientRect();
@@ -92,16 +97,20 @@ export function TourFloatingCard({
         userSelect: isDragging ? 'none' : 'auto',
       }}
     >
+      {/* Draggable header area */}
       <div 
-        className="absolute top-3 left-3 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-primary transition-colors"
+        className="absolute top-0 left-0 right-0 h-12 cursor-grab active:cursor-grabbing rounded-t-xl"
         onMouseDown={handleMouseDown}
       >
-        <GripVertical className="w-4 h-4" />
+        <div className="absolute top-3 left-3 text-muted-foreground pointer-events-none">
+          <GripVertical className="w-4 h-4" />
+        </div>
       </div>
 
       <button
         onClick={onSkip}
-        className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+        className="absolute top-3 right-3 text-muted-foreground hover:text-foreground 
+                   transition-colors z-10 hover:bg-muted/50 rounded p-1"
       >
         <X className="w-4 h-4" />
       </button>

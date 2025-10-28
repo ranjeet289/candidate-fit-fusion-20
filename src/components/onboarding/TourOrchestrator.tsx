@@ -11,7 +11,7 @@ export function TourOrchestrator() {
     tourMode, 
     nextStep, 
     prevStep, 
-    skipTour, 
+    skipTour: contextSkipTour, 
     setTourTriggeredSheet 
   } = useTourContext();
   const navigate = useNavigate();
@@ -21,6 +21,19 @@ export function TourOrchestrator() {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
   const currentTourStep = tourSteps[currentStep];
+
+  // Wrapper function with cleanup
+  const skipTour = () => {
+    // Clean up any highlighted elements
+    const highlightedElements = document.querySelectorAll('.tour-highlight');
+    highlightedElements.forEach(el => el.classList.remove('tour-highlight'));
+    
+    // Clear tour-triggered sheet
+    setTourTriggeredSheet(null);
+    
+    // Call the context's skipTour
+    contextSkipTour();
+  };
 
   // Navigate to the correct route for the current step
   useEffect(() => {
