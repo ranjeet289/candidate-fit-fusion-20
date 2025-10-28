@@ -37,8 +37,9 @@ function App() {
     <EntityProvider>
       <PageTitleProvider>
         <Router>
-          <AuthProvider>
-            <Routes>
+          <TourProvider>
+            <AuthProvider>
+              <Routes>
               {/* Auth Routes */}
               <Route path="/auth/login" element={<Login />} />
               <Route path="/auth/signup" element={<Signup />} />
@@ -50,8 +51,7 @@ function App() {
               {/* Protected Routes */}
               <Route path="/*" element={
                 <ProtectedRoute>
-                  <TourProvider>
-                    <SidebarProvider>
+                  <SidebarProvider>
                       <div className="flex min-h-screen bg-white w-full">
                         <AppSidebar />
                         <main className="flex-1 overflow-auto">
@@ -78,11 +78,11 @@ function App() {
                       <WelcomeModal />
                       <TourOrchestrator />
                     </SidebarProvider>
-                  </TourProvider>
                 </ProtectedRoute>
               } />
-            </Routes>
-          </AuthProvider>
+              </Routes>
+            </AuthProvider>
+          </TourProvider>
         </Router>
       </PageTitleProvider>
     </EntityProvider>
