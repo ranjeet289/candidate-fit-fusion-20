@@ -17,6 +17,7 @@ export function TourOrchestrator() {
   const navigate = useNavigate();
   const location = useLocation();
   const [cardPosition, setCardPosition] = useState({ top: 100, left: 100 });
+  const [draggedPosition, setDraggedPosition] = useState<{ top: number; left: number } | null>(null);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
   const currentTourStep = tourSteps[currentStep];
@@ -112,6 +113,8 @@ export function TourOrchestrator() {
 
   if (!isTourActive || !currentTourStep) return null;
 
+  const finalPosition = draggedPosition || cardPosition;
+
   // Center modal for completion step
   if (currentTourStep.placement === 'center') {
     return (
@@ -134,18 +137,22 @@ export function TourOrchestrator() {
   }
 
   return (
-    <TourFloatingCard
-      title={currentTourStep.title}
-      description={currentTourStep.description}
-      currentStep={currentStep}
-      totalSteps={tourSteps.length}
-      icon={currentTourStep.icon}
-      onNext={nextStep}
-      onPrev={prevStep}
-      onSkip={skipTour}
-      canGoPrev={currentStep > 0}
-      isLastStep={currentStep === tourSteps.length - 1}
-      position={cardPosition}
-    />
+    <>
+      <div className="tour-backdrop" />
+      <TourFloatingCard
+        title={currentTourStep.title}
+        description={currentTourStep.description}
+        currentStep={currentStep}
+        totalSteps={tourSteps.length}
+        icon={currentTourStep.icon}
+        onNext={nextStep}
+        onPrev={prevStep}
+        onSkip={skipTour}
+        canGoPrev={currentStep > 0}
+        isLastStep={currentStep === tourSteps.length - 1}
+        position={finalPosition}
+        onPositionChange={setDraggedPosition}
+      />
+    </>
   );
 }

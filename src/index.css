@@ -99,19 +99,50 @@
 
 /* Tour highlight animation */
 @layer utilities {
-  @keyframes tourPulse {
+  @keyframes tourGlow {
     0%, 100% { 
-      box-shadow: 0 0 0 4px hsl(var(--primary) / 0.3);
+      outline-color: hsl(var(--primary) / 0.8);
+      box-shadow: 0 0 0 4px hsl(var(--primary) / 0.3),
+                  0 0 20px 8px hsl(var(--primary) / 0.4);
     }
     50% { 
-      box-shadow: 0 0 0 8px hsl(var(--primary) / 0.2);
+      outline-color: hsl(var(--primary) / 1);
+      box-shadow: 0 0 0 6px hsl(var(--primary) / 0.5),
+                  0 0 30px 12px hsl(var(--primary) / 0.6);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.92);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 
   .tour-highlight {
     position: relative;
-    z-index: 50;
-    animation: tourPulse 2s ease-in-out infinite;
+    z-index: 60 !important;
+    animation: tourGlow 2s ease-in-out infinite;
+    outline: 3px solid hsl(var(--primary) / 0.8);
+    outline-offset: 4px;
     border-radius: 0.5rem;
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.3),
+                0 0 20px 8px hsl(var(--primary) / 0.4);
+  }
+
+  .tour-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 55;
+    pointer-events: none;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
   }
 }

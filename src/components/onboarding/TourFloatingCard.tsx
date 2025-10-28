@@ -1,7 +1,8 @@
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { TourProgressDots } from './TourProgressDots';
-import { X } from 'lucide-react';
+import { X, GripVertical } from 'lucide-react';
 
 interface TourFloatingCardProps {
   title: string;
@@ -15,6 +16,7 @@ interface TourFloatingCardProps {
   canGoPrev: boolean;
   isLastStep: boolean;
   position: { top?: number; left?: number; bottom?: number; right?: number };
+  onPositionChange?: (position: { top: number; left: number }) => void;
 }
 
 export function TourFloatingCard({
@@ -29,17 +31,74 @@ export function TourFloatingCard({
   canGoPrev,
   isLastStep,
   position,
+  onPositionChange,
 }: TourFloatingCardProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [currentPosition, setCurrentPosition] = useState(position);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setCurrentPosition(position);
+  }, [position]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    
+    const rect = cardRef.current.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+    setIsDragging(true);
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newPosition = {
+        left: e.clientX - dragOffset.x,
+        top: e.clientY - dragOffset.y,
+      };
+      setCurrentPosition(newPosition);
+      onPositionChange?.(newPosition);
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset, onPositionChange]);
+
   return (
     <Card
-      className="fixed z-[100] max-w-sm bg-card border-primary/20 shadow-2xl animate-fade-in p-6"
+      ref={cardRef}
+      className={`fixed z-[100] max-w-sm bg-gradient-to-br from-card to-card/95 border-2 border-primary/60 rounded-xl p-7 
+                  shadow-[0_20px_50px_rgba(124,58,237,0.3)] backdrop-blur-sm animate-scale-in
+                  ${isDragging ? 'cursor-grabbing' : ''}`}
       style={{
-        top: position.top ? `${position.top}px` : undefined,
-        left: position.left ? `${position.left}px` : undefined,
-        bottom: position.bottom ? `${position.bottom}px` : undefined,
-        right: position.right ? `${position.right}px` : undefined,
+        top: currentPosition.top !== undefined ? `${currentPosition.top}px` : undefined,
+        left: currentPosition.left !== undefined ? `${currentPosition.left}px` : undefined,
+        bottom: currentPosition.bottom !== undefined ? `${currentPosition.bottom}px` : undefined,
+        right: currentPosition.right !== undefined ? `${currentPosition.right}px` : undefined,
+        userSelect: isDragging ? 'none' : 'auto',
       }}
     >
+      <div 
+        className="absolute top-3 left-3 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-primary transition-colors"
+        onMouseDown={handleMouseDown}
+      >
+        <GripVertical className="w-4 h-4" />
+      </div>
+
       <button
         onClick={onSkip}
         className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
@@ -47,24 +106,24 @@ export function TourFloatingCard({
         <X className="w-4 h-4" />
       </button>
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 mt-2">
         <TourProgressDots currentStep={currentStep} totalSteps={totalSteps} />
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-muted-foreground font-medium">
           Step {currentStep + 1} of {totalSteps}
         </span>
       </div>
 
-      <div className="flex items-start gap-3 mb-4">
-        <div className="p-2 bg-primary/10 rounded-lg">
+      <div className="flex items-start gap-3 mb-5">
+        <div className="p-2.5 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg">
           <Icon className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h3 className="font-semibold text-lg mb-1">{title}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <h3 className="font-semibold text-lg mb-1.5">{title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 pt-2">
         <Button variant="ghost" size="sm" onClick={onSkip}>
           Skip Tour
         </Button>
