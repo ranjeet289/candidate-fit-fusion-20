@@ -16,7 +16,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to Synapse!',
-    description: 'Your account is currently pending approval. Once approved, you\'ll be able to view jobs and add candidates to the platform. Let\'s show you around in the meantime!',
+    description: 'Let\'s show you the key features. Click Next to start!',
     route: '/',
     target: null,
     placement: 'center',
@@ -26,7 +26,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'jobs-search',
     title: 'Finding the Right Jobs',
-    description: 'Use the search bar to find specific jobs by title, company, or recruiter. Apply filters to narrow down by status (Active, On Hold, Filled).',
+    description: 'Type anything in the search bar to filter jobs instantly.',
     route: '/jobs',
     target: '.search-and-filters',
     placement: 'bottom',
@@ -36,7 +36,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'jobs-actions',
     title: 'Managing Your Jobs',
-    description: 'Click the three-dot menu (⋮) on any job to view details, edit, or mark it as "Working" to track which jobs you\'re actively recruiting for.',
+    description: 'Click the three-dot menu (⋮) to view, edit, or mark jobs as "Working".',
     route: '/jobs',
     target: '.jobs-table-actions',
     placement: 'left',
@@ -46,7 +46,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'submit-button',
     title: 'Adding New Candidates',
-    description: 'Click the "Submit Candidate" button to add candidates. You can manually enter details or upload a resume for automatic parsing.',
+    description: 'Click "Submit Candidate" to add candidates manually or with AI resume parsing.',
     route: '/candidates',
     target: '.submit-candidate-button',
     placement: 'left',
@@ -56,7 +56,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'resume-upload',
     title: 'AI-Powered Resume Parsing',
-    description: 'Upload a resume (PDF, DOCX) and our AI automatically extracts candidate information including name, email, skills, and experience. Review and edit before submitting.',
+    description: 'Upload a resume (PDF, DOCX) and watch AI auto-fill all candidate details.',
     route: '/candidates',
     target: '.resume-upload-area',
     placement: 'right',
@@ -67,7 +67,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'candidate-status',
     title: 'Understanding Candidate Status',
-    description: 'Each status badge shows where candidates are in your pipeline. Hover over any status to see detailed explanations of what each stage means.',
+    description: 'Hover over any status badge to see what each pipeline stage means.',
     route: '/candidates',
     target: '.candidate-stage-column',
     placement: 'right',
@@ -76,8 +76,8 @@ export const tourSteps: TourStep[] = [
   },
   {
     id: 'complete',
-    title: 'You\'re Ready to Start!',
-    description: 'You now know how to search for jobs, mark them as working, submit candidates with resume parsing, and track their status. Full access will be enabled once your account is approved!',
+    title: 'You\'re All Set!',
+    description: 'Start adding candidates and managing your recruitment pipeline.',
     route: '/',
     target: null,
     placement: 'center',
