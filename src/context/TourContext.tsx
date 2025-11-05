@@ -19,6 +19,7 @@ interface TourContextType {
   skipTour: () => void;
   completeTour: () => void;
   restartTour: () => void;
+  completeAllTours: () => void;
   totalSteps: number;
   tourTriggeredSheet: string | null;
   setTourTriggeredSheet: (sheet: string | null) => void;
@@ -145,6 +146,25 @@ export function TourProvider({ children }: { children: ReactNode }) {
     navigate('/');
   };
 
+  const completeAllTours = () => {
+    // Mark all levels 1-5 as completed
+    for (let level = 1; level <= 5; level++) {
+      markLevelCompleted(level);
+    }
+    
+    // Update state
+    const updated = getCompletedLevels();
+    setCompletedLevels(updated);
+    setHighestAvailableLevel(5);
+    
+    // Set tour as seen
+    localStorage.setItem('synapse_tour_completed', 'true');
+    setHasSeenTour(true);
+    
+    // Close any active tour
+    setIsTourActive(false);
+  };
+
   return (
     <TourContext.Provider
       value={{
@@ -162,6 +182,7 @@ export function TourProvider({ children }: { children: ReactNode }) {
         skipTour,
         completeTour,
         restartTour,
+        completeAllTours,
         totalSteps,
         tourTriggeredSheet,
         setTourTriggeredSheet,

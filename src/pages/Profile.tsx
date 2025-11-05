@@ -18,7 +18,7 @@ import { useTourContext } from '@/context/TourContext';
 export default function Profile() {
   const { setTitle } = usePageTitle();
   const { user, updateUser, logout } = useAuth();
-  const { completedLevels, highestAvailableLevel } = useTourContext();
+  const { completedLevels, highestAvailableLevel, completeAllTours } = useTourContext();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
 
@@ -200,12 +200,28 @@ export default function Profile() {
                       Complete interactive tours to master all features
                     </CardDescription>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-primary">
-                      {completedLevels.length}/5
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Levels Complete
+                  <div className="flex items-center gap-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        if (confirm('Mark all tour levels as complete? This is for testing/demo purposes.')) {
+                          completeAllTours();
+                          toast.success('All Tours Completed! 🎉', {
+                            description: 'All 5 tour levels have been marked as complete.',
+                          });
+                        }
+                      }}
+                    >
+                      Mark All Complete
+                    </Button>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold text-primary">
+                        {completedLevels.length}/5
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Levels Complete
+                      </div>
                     </div>
                   </div>
                 </div>
