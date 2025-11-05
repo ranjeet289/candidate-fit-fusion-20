@@ -49,19 +49,28 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const totalSteps = levelStepCounts[currentTourLevel] || 8;
 
   useEffect(() => {
-    // Load completed levels
+    // PROTOTYPE MODE: Auto-complete all tours on first load
+    const prototypeAutoComplete = localStorage.getItem('synapse_prototype_autocomplete');
+    
+    if (prototypeAutoComplete !== 'done') {
+      // First time loading - auto complete all tours
+      for (let level = 1; level <= 5; level++) {
+        markLevelCompleted(level);
+      }
+      localStorage.setItem('synapse_prototype_autocomplete', 'done');
+      localStorage.setItem('synapse_tour_completed', 'true');
+    }
+    
+    // Load completed levels (will now include all 5)
     const completed = getCompletedLevels();
     setCompletedLevels(completed);
     
-    // Load highest available level
+    // Load highest available level (will be 5)
     const highest = getHighestAvailableLevel();
     setHighestAvailableLevel(highest);
     
-    // Check if user has seen any tour
-    const seenTour = localStorage.getItem('synapse_tour_completed');
-    if (seenTour === 'true' || completed.length > 1) {
-      setHasSeenTour(true);
-    }
+    // Mark tour as seen
+    setHasSeenTour(true);
   }, []);
 
   const startTour = (mode: TourMode) => {
