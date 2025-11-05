@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTourContext } from '@/context/TourContext';
-import { tourSteps } from '@/lib/tour-steps';
+import { level1Steps } from '@/lib/tour-levels/level1-steps';
+import { level2Steps } from '@/lib/tour-levels/level2-steps';
+import { level3Steps } from '@/lib/tour-levels/level3-steps';
+import { level4Steps } from '@/lib/tour-levels/level4-steps';
+import { level5Steps } from '@/lib/tour-levels/level5-steps';
 import { TourFloatingCard } from './TourFloatingCard';
 
 export function TourOrchestrator() {
   const { 
     isTourActive, 
-    currentStep, 
+    currentStep,
+    currentTourLevel,
     tourMode, 
     nextStep, 
     prevStep, 
@@ -20,6 +25,16 @@ export function TourOrchestrator() {
   const [draggedPosition, setDraggedPosition] = useState<{ top: number; left: number } | null>(null);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
+  // Get tour steps based on current level
+  const levelStepsMap: Record<number, any[]> = {
+    1: level1Steps,
+    2: level2Steps,
+    3: level3Steps,
+    4: level4Steps,
+    5: level5Steps,
+  };
+  
+  const tourSteps = levelStepsMap[currentTourLevel] || level1Steps;
   const currentTourStep = tourSteps[currentStep];
 
   // Wrapper function with cleanup

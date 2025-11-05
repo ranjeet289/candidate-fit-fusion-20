@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCompletedLevels, markLevelCompleted, getHighestAvailableLevel } from '@/lib/tour-events';
 
 type TourMode = 'auto' | 'manual';
 
@@ -8,10 +9,15 @@ interface TourContextType {
   currentStep: number;
   tourMode: TourMode;
   hasSeenTour: boolean;
+  currentTourLevel: number;
+  completedLevels: number[];
+  highestAvailableLevel: number;
   startTour: (mode: TourMode) => void;
+  startLevelTour: (level: number) => void;
   nextStep: () => void;
   prevStep: () => void;
   skipTour: () => void;
+  completeTour: () => void;
   restartTour: () => void;
   totalSteps: number;
   tourTriggeredSheet: string | null;
@@ -25,13 +31,34 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [tourMode, setTourMode] = useState<TourMode>('auto');
   const [hasSeenTour, setHasSeenTour] = useState(false);
+  const [currentTourLevel, setCurrentTourLevel] = useState(1);
+  const [completedLevels, setCompletedLevels] = useState<number[]>([]);
+  const [highestAvailableLevel, setHighestAvailableLevel] = useState(1);
   const [tourTriggeredSheet, setTourTriggeredSheet] = useState<string | null>(null);
   const navigate = useNavigate();
-  const totalSteps = 7;
+  
+  // Dynamic total steps based on current level
+  const levelStepCounts: Record<number, number> = {
+    1: 8,  // Level 1: Getting Started
+    2: 6,  // Level 2: Maximizing Value
+    3: 6,  // Level 3: Pipeline Mastery
+    4: 6,  // Level 4: Outreach & Engagement
+    5: 6,  // Level 5: Power User
+  };
+  const totalSteps = levelStepCounts[currentTourLevel] || 8;
 
   useEffect(() => {
-    const completed = localStorage.getItem('synapse_tour_completed');
-    if (completed === 'true') {
+    // Load completed levels
+    const completed = getCompletedLevels();
+    setCompletedLevels(completed);
+    
+    // Load highest available level
+    const highest = getHighestAvailableLevel();
+    setHighestAvailableLevel(highest);
+    
+    // Check if user has seen any tour
+    const seenTour = localStorage.getItem('synapse_tour_completed');
+    if (seenTour === 'true' || completed.length > 1) {
       setHasSeenTour(true);
     }
   }, []);
@@ -39,9 +66,27 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const startTour = (mode: TourMode) => {
     setTourMode(mode);
     setCurrentStep(0);
+    setCurrentTourLevel(1);
     setIsTourActive(true);
     localStorage.setItem('synapse_tour_mode', mode);
     localStorage.setItem('synapse_tour_last_step', '0');
+    localStorage.setItem('synapse_current_tour_level', '1');
+    navigate('/');
+  };
+
+  const startLevelTour = (level: number) => {
+    if (level > highestAvailableLevel) {
+      console.warn(`Level ${level} is not yet available`);
+      return;
+    }
+    
+    setTourMode('manual');
+    setCurrentStep(0);
+    setCurrentTourLevel(level);
+    setIsTourActive(true);
+    localStorage.setItem('synapse_tour_mode', 'manual');
+    localStorage.setItem('synapse_tour_last_step', '0');
+    localStorage.setItem('synapse_current_tour_level', String(level));
     navigate('/');
   };
 
@@ -73,6 +118,16 @@ export function TourProvider({ children }: { children: ReactNode }) {
 
   const completeTour = () => {
     setIsTourActive(false);
+    
+    // Mark current level as completed
+    markLevelCompleted(currentTourLevel);
+    const updated = getCompletedLevels();
+    setCompletedLevels(updated);
+    
+    // Update highest available level
+    const highest = getHighestAvailableLevel();
+    setHighestAvailableLevel(highest);
+    
     localStorage.setItem('synapse_tour_completed', 'true');
     localStorage.setItem('synapse_tour_skipped', 'false');
     setHasSeenTour(true);
@@ -83,8 +138,10 @@ export function TourProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('synapse_tour_skipped');
     setHasSeenTour(false);
     setCurrentStep(0);
+    setCurrentTourLevel(1);
     setIsTourActive(true);
     setTourMode('manual');
+    localStorage.setItem('synapse_current_tour_level', '1');
     navigate('/');
   };
 
@@ -95,10 +152,15 @@ export function TourProvider({ children }: { children: ReactNode }) {
         currentStep,
         tourMode,
         hasSeenTour,
+        currentTourLevel,
+        completedLevels,
+        highestAvailableLevel,
         startTour,
+        startLevelTour,
         nextStep,
         prevStep,
         skipTour,
+        completeTour,
         restartTour,
         totalSteps,
         tourTriggeredSheet,

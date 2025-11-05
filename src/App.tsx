@@ -20,6 +20,7 @@ import { TourProvider, useTourContext } from './context/TourContext';
 import { TourOrchestrator } from './components/onboarding/TourOrchestrator';
 import { WelcomeModal } from './components/onboarding/WelcomeModal';
 import { TourBanner } from './components/onboarding/TourBanner';
+import { LevelUnlockBanner } from './components/onboarding/LevelUnlockBanner';
 import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
@@ -77,6 +78,7 @@ function App() {
                       <Toaster />
                       <WelcomeModal />
                       <TourOrchestrator />
+                      <LevelUnlockBanner />
                     </SidebarProvider>
                 </ProtectedRoute>
               } />
