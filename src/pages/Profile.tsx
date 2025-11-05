@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePageTitle } from '@/hooks/use-page-title';
 import { useAuth } from '@/context/AuthContext';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,16 +10,25 @@ import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Lock, Bell, Trash2 } from 'lucide-react';
+import { User, Mail, Lock, Bell, Trash2, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
+import { TourLevelSelector } from '@/components/onboarding/TourLevelSelector';
+import { useTourContext } from '@/context/TourContext';
 
 export default function Profile() {
   const { setTitle } = usePageTitle();
   const { user, updateUser, logout } = useAuth();
+  const { completedLevels, highestAvailableLevel } = useTourContext();
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
 
   useEffect(() => {
     setTitle('Profile');
-  }, [setTitle]);
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [setTitle, searchParams]);
 
   const handleSaveProfile = () => {
     toast.success('Profile updated successfully');
@@ -45,7 +55,7 @@ export default function Profile() {
           </p>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="profile">
               <User className="h-4 w-4 mr-2" />
@@ -54,6 +64,10 @@ export default function Profile() {
             <TabsTrigger value="security">
               <Lock className="h-4 w-4 mr-2" />
               Security
+            </TabsTrigger>
+            <TabsTrigger value="learning">
+              <GraduationCap className="h-4 w-4 mr-2" />
+              Learning
             </TabsTrigger>
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2" />
@@ -172,6 +186,73 @@ export default function Profile() {
                     Delete
                   </Button>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="learning" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Your Learning Journey</CardTitle>
+                    <CardDescription>
+                      Complete interactive tours to master all features
+                    </CardDescription>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-3xl font-bold text-primary">
+                      {completedLevels.length}/5
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Levels Complete
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-muted-foreground">Progress</span>
+                        <span className="font-medium">{Math.round((completedLevels.length / 5) * 100)}%</span>
+                      </div>
+                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primary transition-all duration-500"
+                          style={{ width: `${(completedLevels.length / 5) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4 pt-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-foreground">{completedLevels.length}</div>
+                      <div className="text-xs text-muted-foreground">Completed</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-foreground">{highestAvailableLevel}</div>
+                      <div className="text-xs text-muted-foreground">Available</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-foreground">{5 - completedLevels.length}</div>
+                      <div className="text-xs text-muted-foreground">Remaining</div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>All Tour Levels</CardTitle>
+                <CardDescription>
+                  Start or review any available tour level
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <TourLevelSelector />
               </CardContent>
             </Card>
           </TabsContent>

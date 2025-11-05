@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from './components/app-sidebar';
-import { Bell, HelpCircle, RotateCcw, BookOpen, ExternalLink } from 'lucide-react';
+import { Bell, HelpCircle, RotateCcw, BookOpen, ExternalLink, GraduationCap } from 'lucide-react';
 import Index from './pages/Index';
 import Overview from './pages/Overview';
 import Jobs from './pages/Jobs';
@@ -93,7 +93,8 @@ function App() {
 
 function HeaderWithTitle() {
   const { title, icon, badge } = usePageTitle();
-  const { restartTour } = useTourContext();
+  const { restartTour, isTourActive, currentTourLevel } = useTourContext();
+  const navigate = useNavigate();
   
   return (
     <div className="flex justify-between items-center px-6 py-4 border-b border-border bg-card">
@@ -111,12 +112,21 @@ function HeaderWithTitle() {
           </PopoverTrigger>
           <PopoverContent className="w-56">
             <div className="space-y-2">
+              {isTourActive && (
+                <button
+                  onClick={restartTour}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Restart Current Tour
+                </button>
+              )}
               <button
-                onClick={restartTour}
+                onClick={() => navigate('/profile?tab=learning')}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
               >
-                <RotateCcw className="w-4 h-4" />
-                Restart Tour
+                <GraduationCap className="w-4 h-4" />
+                Browse All Tours
               </button>
               <button className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors">
                 <BookOpen className="w-4 h-4" />
