@@ -1,5 +1,5 @@
-import { Users, Briefcase, BarChart3, Search, Target, Send, MessageSquare, Sparkles, Settings, LogOut, Calendar, Bell, FileText, HelpCircle, Bot, Zap, Grid3X3, CircleHelp, List, Activity, Home, Zap as ZapIcon, MessageCircle, Plane as PaperPlane, Folder, User, HelpCircle as Help, LifeBuoy, BarChart2, UserCheck, Ticket, UserPlus, FolderOpen, Users2, Settings2, Power } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Users, Briefcase, BarChart3, Search, Target, Send, MessageSquare, Sparkles, Settings, LogOut, Calendar, Bell, FileText, HelpCircle, Bot, Zap, Grid3X3, CircleHelp, List, Activity, Home, Zap as ZapIcon, MessageCircle, Plane as PaperPlane, Folder, User, HelpCircle as Help, LifeBuoy, BarChart2, UserCheck, Ticket, UserPlus, FolderOpen, Users2, Settings2, Power, Trophy } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +11,12 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { useTourContext } from "@/context/TourContext";
+import { getBadgeForLevel, getEarnedBadges, getBadgeUnlockDate } from "@/lib/achievement-badges";
+import { formatDistanceToNow } from "date-fns";
+import { cn } from "@/lib/utils";
 
 // Premium badge for premium features
 function PremiumBadge() {
@@ -32,9 +38,13 @@ function NewBadge() {
 }
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+  const { completedLevels } = useTourContext();
+  const earnedBadges = getEarnedBadges(completedLevels);
+
   return (
     <Sidebar className="border-r border-sidebar-border bg-sidebar w-64">
-      <SidebarHeader className="p-4 bg-sidebar border-b border-sidebar-border">
+      <SidebarHeader className="p-4 bg-sidebar border-b border-sidebar-border space-y-3">
         <div className="flex items-center gap-2">
           <img 
             src="/lovable-uploads/c2c9d1f2-a8bc-4237-8753-bed9000d26fd.png" 
@@ -43,6 +53,81 @@ export function AppSidebar() {
           />
           <span className="font-semibold text-sidebar-foreground">Synapse</span>
         </div>
+
+        {/* Mini Trophy Case */}
+        <TooltipProvider>
+          <div className="p-3 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1.5">
+                <Trophy className="w-4 h-4 text-primary" />
+                <span className="text-xs font-semibold text-sidebar-foreground">Achievements</span>
+              </div>
+              <span className="text-xs text-muted-foreground">{earnedBadges.length}/5</span>
+            </div>
+            
+            <div className="flex items-center gap-1.5 justify-center">
+              {[1, 2, 3, 4, 5].map((level) => {
+                const badge = getBadgeForLevel(level);
+                const isEarned = completedLevels.includes(level);
+                
+                if (!badge) return null;
+                
+                return (
+                  <Tooltip key={level}>
+                    <TooltipTrigger asChild>
+                      <div 
+                        className={cn(
+                          "relative w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer",
+                          isEarned 
+                            ? "scale-100 hover:scale-110" 
+                            : "opacity-40 scale-90 grayscale"
+                        )}
+                        style={isEarned ? {
+                          background: `linear-gradient(135deg, ${badge.colors.primary}, ${badge.colors.secondary})`,
+                          boxShadow: `0 4px 12px ${badge.colors.glow}`
+                        } : {
+                          backgroundColor: 'hsl(var(--muted))'
+                        }}
+                      >
+                        <badge.icon className="w-4 h-4 text-white" />
+                        {isEarned && (
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-sidebar" />
+                        )}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="max-w-xs">
+                      <div>
+                        <p className="font-semibold">{badge.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{badge.description}</p>
+                        {isEarned && getBadgeUnlockDate(level) && (
+                          <p className="text-xs text-green-500 mt-1">
+                            ✓ Unlocked {formatDistanceToNow(getBadgeUnlockDate(level)!, { addSuffix: true })}
+                          </p>
+                        )}
+                        {!isEarned && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            🔒 Complete Level {level} Tour to unlock
+                          </p>
+                        )}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+            
+            {earnedBadges.length < 5 && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="w-full mt-2 text-xs h-7 hover:bg-primary/10"
+                onClick={() => navigate('/profile?tab=learning')}
+              >
+                View Progress
+              </Button>
+            )}
+          </div>
+        </TooltipProvider>
       </SidebarHeader>
       <SidebarContent className="bg-sidebar">
         <SidebarGroup>

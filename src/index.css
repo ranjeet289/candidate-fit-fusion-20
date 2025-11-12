@@ -189,4 +189,43 @@
   .animate-shake {
     animation: shake 0.5s ease-in-out;
   }
+
+  /* Badge animations */
+  @keyframes badge-unlock {
+    0% { 
+      transform: scale(0) rotate(-180deg); 
+      opacity: 0; 
+    }
+    50% { 
+      transform: scale(1.2) rotate(10deg); 
+    }
+    100% { 
+      transform: scale(1) rotate(0deg); 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { 
+      box-shadow: 0 0 20px var(--glow-color); 
+    }
+    50% { 
+      box-shadow: 0 0 40px var(--glow-color), 0 0 60px var(--glow-color); 
+    }
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% { 
+      transform: translateY(0); 
+    }
+    50% { 
+      transform: translateY(-10px); 
+    }
+  }
+
+  .animate-badge-unlock {
+    animation: badge-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), 
+               glow-pulse 2s ease-in-out infinite,
+               bounce-slow 2s ease-in-out infinite;
+  }
 }

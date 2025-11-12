@@ -7,6 +7,7 @@ import { level3Steps } from '@/lib/tour-levels/level3-steps';
 import { level4Steps } from '@/lib/tour-levels/level4-steps';
 import { level5Steps } from '@/lib/tour-levels/level5-steps';
 import { TourFloatingCard } from './TourFloatingCard';
+import { BadgeUnlockModal } from '@/components/achievements/BadgeUnlockModal';
 
 export function TourOrchestrator() {
   const { 
@@ -17,7 +18,10 @@ export function TourOrchestrator() {
     nextStep, 
     prevStep, 
     skipTour: contextSkipTour, 
-    setTourTriggeredSheet 
+    setTourTriggeredSheet,
+    badgeToShow,
+    showBadgeModal,
+    setShowBadgeModal,
   } = useTourContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -180,6 +184,13 @@ export function TourOrchestrator() {
         isLastStep={currentStep === tourSteps.length - 1}
         position={finalPosition}
         onPositionChange={setDraggedPosition}
+      />
+      
+      {/* Badge Unlock Modal */}
+      <BadgeUnlockModal
+        badge={badgeToShow}
+        isOpen={showBadgeModal}
+        onClose={() => setShowBadgeModal(false)}
       />
     </>
   );

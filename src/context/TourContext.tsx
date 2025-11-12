@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCompletedLevels, markLevelCompleted, getHighestAvailableLevel } from '@/lib/tour-events';
+import { saveBadgeUnlockTimestamp, getBadgeForLevel, AchievementBadge } from '@/lib/achievement-badges';
 
 type TourMode = 'auto' | 'manual';
 
@@ -23,6 +24,9 @@ interface TourContextType {
   totalSteps: number;
   tourTriggeredSheet: string | null;
   setTourTriggeredSheet: (sheet: string | null) => void;
+  badgeToShow: AchievementBadge | null;
+  showBadgeModal: boolean;
+  setShowBadgeModal: (show: boolean) => void;
 }
 
 const TourContext = createContext<TourContextType | undefined>(undefined);
@@ -36,6 +40,8 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [highestAvailableLevel, setHighestAvailableLevel] = useState(1);
   const [tourTriggeredSheet, setTourTriggeredSheet] = useState<string | null>(null);
+  const [badgeToShow, setBadgeToShow] = useState<AchievementBadge | null>(null);
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
   const navigate = useNavigate();
   
   // Dynamic total steps based on current level
@@ -134,6 +140,16 @@ export function TourProvider({ children }: { children: ReactNode }) {
     const updated = getCompletedLevels();
     setCompletedLevels(updated);
     
+    // Save badge unlock timestamp
+    saveBadgeUnlockTimestamp(currentTourLevel);
+    
+    // Trigger badge unlock celebration
+    const badge = getBadgeForLevel(currentTourLevel);
+    if (badge) {
+      setBadgeToShow(badge);
+      setShowBadgeModal(true);
+    }
+    
     // Update highest available level
     const highest = getHighestAvailableLevel();
     setHighestAvailableLevel(highest);
@@ -159,6 +175,7 @@ export function TourProvider({ children }: { children: ReactNode }) {
     // Mark all levels 1-5 as completed
     for (let level = 1; level <= 5; level++) {
       markLevelCompleted(level);
+      saveBadgeUnlockTimestamp(level);
     }
     
     // Update state
@@ -195,6 +212,9 @@ export function TourProvider({ children }: { children: ReactNode }) {
         totalSteps,
         tourTriggeredSheet,
         setTourTriggeredSheet,
+        badgeToShow,
+        showBadgeModal,
+        setShowBadgeModal,
       }}
     >
       {children}

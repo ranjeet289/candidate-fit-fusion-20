@@ -10,17 +10,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Lock, Bell, Trash2, GraduationCap } from 'lucide-react';
+import { User, Mail, Lock, Bell, Trash2, GraduationCap, Trophy, Check, Lock as LockIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { TourLevelSelector } from '@/components/onboarding/TourLevelSelector';
 import { useTourContext } from '@/context/TourContext';
+import { ACHIEVEMENT_BADGES, getEarnedBadges, getBadgeUnlockDate, calculateBadgeScore } from '@/lib/achievement-badges';
+import { Badge } from '@/components/ui/badge';
+import { formatDistanceToNow } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export default function Profile() {
   const { setTitle } = usePageTitle();
   const { user, updateUser, logout } = useAuth();
-  const { completedLevels, highestAvailableLevel, completeAllTours } = useTourContext();
+  const { completedLevels, highestAvailableLevel, completeAllTours, startLevelTour } = useTourContext();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
+  const earnedBadges = getEarnedBadges(completedLevels);
 
   useEffect(() => {
     setTitle('Profile');
@@ -256,6 +261,107 @@ export default function Profile() {
                       <div className="text-xs text-muted-foreground">Remaining</div>
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Achievement Badge Showcase */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-primary" />
+                      Achievement Badges
+                    </CardTitle>
+                    <CardDescription>
+                      Collect badges as you master Synapse and unlock earning strategies
+                    </CardDescription>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-primary">
+                      {calculateBadgeScore(earnedBadges)}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Total Points</div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {ACHIEVEMENT_BADGES.map((badge) => {
+                    const isEarned = completedLevels.includes(badge.level);
+                    const unlockDate = getBadgeUnlockDate(badge.level);
+                    
+                    return (
+                      <div 
+                        key={badge.id} 
+                        className={cn(
+                          "relative p-4 rounded-xl border-2 transition-all duration-300",
+                          isEarned 
+                            ? "border-primary/30 shadow-lg hover:shadow-xl hover:scale-105 bg-card" 
+                            : "bg-muted/30 border-muted opacity-60 grayscale"
+                        )}
+                      >
+                        {/* Rarity indicator */}
+                        <div className="absolute top-2 right-2">
+                          <Badge variant="outline" className="text-xs uppercase">
+                            {badge.rarity}
+                          </Badge>
+                        </div>
+                        
+                        {/* Badge icon */}
+                        <div 
+                          className={cn(
+                            "w-16 h-16 rounded-full flex items-center justify-center mb-3 mx-auto",
+                            isEarned ? "shadow-lg" : "bg-muted"
+                          )}
+                          style={isEarned ? {
+                            background: `linear-gradient(135deg, ${badge.colors.primary}, ${badge.colors.secondary})`,
+                            boxShadow: `0 8px 24px ${badge.colors.glow}`
+                          } : {}}
+                        >
+                          <badge.icon className="w-8 h-8 text-white" />
+                        </div>
+                        
+                        {/* Badge info */}
+                        <div className="text-center space-y-2">
+                          <h3 className="font-bold text-lg">{badge.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {badge.description}
+                          </p>
+                          
+                          {isEarned ? (
+                            <div className="flex items-center justify-center gap-1.5 text-green-600">
+                              <Check className="w-4 h-4" />
+                              <span className="text-xs font-medium">
+                                Unlocked {unlockDate && formatDistanceToNow(unlockDate, { addSuffix: true })}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                              <LockIcon className="w-4 h-4" />
+                              <span className="text-xs">Complete Level {badge.level} Tour</span>
+                            </div>
+                          )}
+                          
+                          <div className="text-sm font-bold text-primary">
+                            {badge.points} Points
+                          </div>
+                        </div>
+                        
+                        {/* Action button */}
+                        {!isEarned && highestAvailableLevel >= badge.level && (
+                          <Button 
+                            size="sm" 
+                            className="w-full mt-3"
+                            onClick={() => startLevelTour(badge.level)}
+                          >
+                            Start Level {badge.level} Tour
+                          </Button>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
