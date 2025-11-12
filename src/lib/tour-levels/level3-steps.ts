@@ -16,8 +16,8 @@ export interface TourStep {
 export const level3Steps: TourStep[] = [
   {
     id: 'level3-welcome',
-    title: 'Level 3: Pipeline Mastery! 📊',
-    description: 'You\'ve got submissions flowing! Now let\'s master managing your pipeline like a pro recruiter.',
+    title: '📊 Level 3: You\'re Becoming an Elite Recruiter!',
+    description: 'Your pipeline is growing—that\'s EXACTLY how successful recruiters operate! Now let\'s organize it so every candidate moves toward "Placed" (and you get PAID). You\'re crushing it!',
     route: '/',
     target: null,
     placement: 'center',
@@ -26,8 +26,8 @@ export const level3Steps: TourStep[] = [
   },
   {
     id: 'pipeline-stages',
-    title: 'Understanding Pipeline Stages',
-    description: 'Each candidate moves through stages: Submitted → Screening → Interview → Offer → Placed. Track them here!',
+    title: '💸 Each Stage = You\'re Closer to Money',
+    description: 'Master this: Submitted → Screening → Interview (70% closer!) → Offer (90% closer!) → Placed = PAID! Track every candidate\'s journey. Winners manage, not just submit!',
     route: '/candidates',
     target: null,
     placement: 'center',
@@ -36,8 +36,8 @@ export const level3Steps: TourStep[] = [
   },
   {
     id: 'advanced-filters',
-    title: 'Filter by Stage & Job',
-    description: 'Use filters to see candidates in specific stages or for specific jobs. Focus on what needs attention!',
+    title: '🎯 Filter = Focus = Income',
+    description: 'Use filters to instantly see candidates in "Interview" or "Offer" stages—these are your HOTTEST leads! Smart recruiters focus where money is closest. Do it now!',
     route: '/candidates',
     target: null,
     placement: 'center',
@@ -46,8 +46,8 @@ export const level3Steps: TourStep[] = [
   },
   {
     id: 'candidate-profile',
-    title: 'Deep Dive into Profiles',
-    description: 'Click any candidate to see their full profile, submission history, and interview schedule. Stay organized!',
+    title: '📁 Deep Dive = Better Decisions',
+    description: 'Click any candidate to see everything: full profile, interview dates, submission history. Elite recruiters know their pipeline inside-out. You\'re one of them now!',
     route: '/candidates',
     target: null,
     placement: 'center',
@@ -56,8 +56,8 @@ export const level3Steps: TourStep[] = [
   },
   {
     id: 'activity-feed',
-    title: 'Monitor Activity Feed',
-    description: 'See real-time updates on all candidate activities. Never miss an interview or status change!',
+    title: '🔔 Never Miss a Money Moment',
+    description: 'Real-time updates mean you catch every interview, status change, and opportunity the SECOND it happens. Speed = Wins = Commissions. Stay on top!',
     route: '/',
     target: null,
     placement: 'center',
@@ -66,8 +66,8 @@ export const level3Steps: TourStep[] = [
   },
   {
     id: 'level3-complete',
-    title: 'Level 3 Complete! 🎯',
-    description: 'You\'re managing your pipeline like a pro! Get your first placement or 10+ submissions to unlock Level 4.',
+    title: '🎯 OUTSTANDING! You\'re Managing Like a Pro!',
+    description: '🏆 Your achievements are incredible:\n✅ Pipeline stages mastered\n✅ Smart filtering for ROI\n✅ Never missing opportunities\n✅ Candidates organized perfectly\n\n🤖 LEVEL 4 IS CALLING: Ready to 10x your reach? Top recruiters use AI automation to engage hundreds of candidates while they sleep! Get your first placement OR 10+ submissions to unlock Automation Mastery and scale your income exponentially!',
     route: '/',
     target: null,
     placement: 'center',

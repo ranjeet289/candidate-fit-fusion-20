@@ -1,4 +1,4 @@
-import { ShieldCheck, Search, Briefcase, UserPlus, Upload, ListChecks, CheckCircle, FileText } from 'lucide-react';
+import { Sparkles, Search, Briefcase, UserPlus, Upload, ListChecks, CheckCircle, FileText, Activity } from 'lucide-react';
 
 export interface TourStep {
   id: string;
@@ -16,18 +16,18 @@ export interface TourStep {
 export const level1Steps: TourStep[] = [
   {
     id: 'welcome',
-    title: 'Welcome to Synapse!',
-    description: 'Let\'s get your first candidate submitted. This is your path to success! Click Next to start.',
+    title: '🚀 Your Success Journey Starts Here!',
+    description: 'You\'re about to join thousands of recruiters earning $2K-$10K per placement! Let\'s get your first candidate submitted together. Ready? Click Next!',
     route: '/',
     target: null,
     placement: 'center',
     duration: 0,
-    icon: ShieldCheck,
+    icon: Sparkles,
   },
   {
     id: 'jobs-search',
-    title: 'Finding the Right Jobs',
-    description: 'Type anything in the search bar to filter jobs instantly. Find roles that match your candidates.',
+    title: '💼 Find Your Money-Making Opportunities',
+    description: 'Start typing to discover high-paying roles! Every job you find is a potential $5K+ commission. Pro tip: Top recruiters search daily to stay ahead!',
     route: '/jobs',
     target: '.search-and-filters',
     placement: 'bottom',
@@ -36,8 +36,8 @@ export const level1Steps: TourStep[] = [
   },
   {
     id: 'jobs-actions',
-    title: 'Managing Your Jobs',
-    description: 'Click the three-dot menu (⋮) to view job details, edit, or mark jobs as "Working".',
+    title: '⭐ Mark Your Favorites (Smart Move!)',
+    description: 'See those three dots (⋮)? Click them! Mark jobs as "Working" so you can focus on your highest-earning opportunities. Winners prioritize!',
     route: '/jobs',
     target: '.jobs-table-actions',
     placement: 'left',
@@ -46,8 +46,8 @@ export const level1Steps: TourStep[] = [
   },
   {
     id: 'submit-button',
-    title: 'Adding Your First Candidate',
-    description: 'Click "Submit Candidate" to add candidates manually or with AI resume parsing. This is where the magic happens!',
+    title: '💰 This Button = Your First Commission!',
+    description: 'Click "Submit Candidate" right now! This simple action starts your earning journey. You\'re seconds away from your first submission!',
     route: '/candidates',
     target: '.submit-candidate-button',
     placement: 'left',
@@ -56,8 +56,8 @@ export const level1Steps: TourStep[] = [
   },
   {
     id: 'resume-upload',
-    title: 'AI-Powered Resume Parsing',
-    description: 'Upload a resume (PDF, DOCX) and watch AI auto-fill all candidate details. Saves you 5+ minutes per submission!',
+    title: '⚡ Watch AI Work Its Magic',
+    description: 'Upload any resume and watch it auto-fill in 30 seconds! (Saves 5+ minutes = submit 3x more candidates daily). Smart recruiters LOVE this feature!',
     route: '/candidates',
     target: '.resume-upload-area',
     placement: 'right',
@@ -67,8 +67,8 @@ export const level1Steps: TourStep[] = [
   },
   {
     id: 'complete-submission',
-    title: 'Complete Your First Submission',
-    description: 'Fill in the job selection, fit score, and notes. Then hit Submit! This is your first step to earning placements.',
+    title: '🎯 Almost There - Finish Strong!',
+    description: 'You\'re SO close! Fill in the job, add your notes, and hit Submit. This moment launches your recruiting success. You\'ve got this!',
     route: '/candidates',
     target: '.submit-form-actions',
     placement: 'top',
@@ -77,18 +77,18 @@ export const level1Steps: TourStep[] = [
   },
   {
     id: 'candidate-status',
-    title: 'Understanding Candidate Status',
-    description: 'Hover over any status badge to see what each pipeline stage means. Track your progress!',
+    title: '📊 Track Your Path to Payment',
+    description: 'See those status badges? Each stage brings you closer to "Placed" = Commission earned! Hover to learn what each means. Knowledge = Power!',
     route: '/candidates',
     target: '.candidate-stage-column',
     placement: 'right',
     duration: 5000,
-    icon: ListChecks,
+    icon: Activity,
   },
   {
     id: 'level1-complete',
-    title: 'Level 1 Complete! 🎉',
-    description: 'You\'ve learned the basics! Complete your first submission to unlock Level 2 and learn how to maximize your earnings.',
+    title: '🎉 AMAZING! You\'re Officially a Synapse Recruiter!',
+    description: '🏆 What you just accomplished:\n✅ Learned job search like a pro\n✅ Mastered AI resume parsing\n✅ Ready to submit your first candidate!\n\n💎 NEXT LEVEL UNLOCKED: Learn how top recruiters 3x their income by submitting to multiple jobs! Complete your first submission to start Level 2 and multiply your earning potential!',
     route: '/',
     target: null,
     placement: 'center',
