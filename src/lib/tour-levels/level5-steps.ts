@@ -16,8 +16,8 @@ export interface TourStep {
 export const level5Steps: TourStep[] = [
   {
     id: 'level5-welcome',
-    title: 'Level 5: Power User Status! 👑',
-    description: 'You\'re a Synapse expert! Now let\'s optimize your performance with advanced analytics and insights.',
+    title: '👑 Level 5: Welcome to the Elite Circle!',
+    description: 'You\'re consistently earning—congratulations! Now let\'s use analytics to optimize everything and maximize your income. This is how top 1% recruiters think. You\'ve earned this!',
     route: '/',
     target: null,
     placement: 'center',
@@ -26,8 +26,8 @@ export const level5Steps: TourStep[] = [
   },
   {
     id: 'analytics-overview',
-    title: 'Your Performance Dashboard',
-    description: 'See your submission-to-placement rate, top-performing jobs, and earnings projections. Data-driven success!',
+    title: '📊 Data = Dollars (Track Everything!)',
+    description: 'See your exact submission-to-placement rate, highest-earning jobs, and monthly projections. Knowledge is money—use these insights to double your placement rate!',
     route: '/',
     target: null,
     placement: 'center',
@@ -36,8 +36,8 @@ export const level5Steps: TourStep[] = [
   },
   {
     id: 'feedback-analytics',
-    title: 'Learn from Feedback',
-    description: 'Analyze client feedback to understand what makes candidates successful. Improve your fit scores!',
+    title: '💡 Learn = Earn More',
+    description: 'Analyze which candidate types get placed fastest. Find your "winning formula" and 2x your commissions by doing more of what works. Elite recruiters optimize constantly!',
     route: '/',
     target: null,
     placement: 'center',
@@ -46,8 +46,8 @@ export const level5Steps: TourStep[] = [
   },
   {
     id: 'fit-score-optimization',
-    title: 'Master Fit Score Analysis',
-    description: 'See detailed breakdowns of what makes a great fit. Use this to pre-qualify candidates before submission!',
+    title: '🎯 Master Fit Scores = 3x Close Rate',
+    description: 'Candidates with 90+ fit scores place 3x faster! Learn what drives high scores and pre-qualify before submitting. This ONE skill can transform your income!',
     route: '/candidates',
     target: null,
     placement: 'center',
@@ -56,8 +56,8 @@ export const level5Steps: TourStep[] = [
   },
   {
     id: 'ai-agents-overview',
-    title: 'Explore All AI Agents',
-    description: 'Discover the full suite of AI agents: Sourcing, Recommendation, Outreach. Use them together for maximum results!',
+    title: '🚀 Stack All Tools = Maximum Power',
+    description: 'Use Sourcing + Recommendation + Outreach + Analytics together! Top earners use all 4 to 10x their monthly income. You have everything you need right here!',
     route: '/ai-agents',
     target: null,
     placement: 'center',
@@ -66,8 +66,8 @@ export const level5Steps: TourStep[] = [
   },
   {
     id: 'level5-complete',
-    title: 'Congratulations, Power User! 🏆',
-    description: 'You\'ve mastered Synapse! Keep placing candidates and watch your success grow. You\'re unstoppable!',
+    title: '🏆 LEGENDARY! You\'re a Certified Synapse Master!',
+    description: '👑 Your transformation is complete:\n✅ AI automation expert\n✅ Data-driven optimizer\n✅ Pipeline management pro\n✅ Elite income potential unlocked\n\n💰 YOU\'VE JOINED THE TOP 1%: You have every tool, skill, and strategy used by 6-figure recruiters. Your earning potential is now UNLIMITED. Keep placing candidates, keep optimizing, and watch your monthly commissions grow exponentially!\n\n🎉 You\'re not just using Synapse—you\'re MASTERING the recruiting game. Congratulations, legend!',
     route: '/',
     target: null,
     placement: 'center',

@@ -16,8 +16,8 @@ export interface TourStep {
 export const level2Steps: TourStep[] = [
   {
     id: 'level2-welcome',
-    title: 'Level 2: Maximizing Value! 💰',
-    description: 'Great job on your first submission! Now let\'s multiply your chances of placements by submitting strategically.',
+    title: '💎 Level 2: You\'re Ready to Multiply Your Income!',
+    description: 'Incredible work on Level 1! Now here\'s the secret top earners use: One candidate × 5 jobs = 5x the commission opportunities. Let\'s do this together!',
     route: '/',
     target: null,
     placement: 'center',
@@ -26,8 +26,8 @@ export const level2Steps: TourStep[] = [
   },
   {
     id: 'smart-matches',
-    title: 'Discover Smart Matches',
-    description: 'AI automatically suggests the best job matches for your candidates. Click here to see AI-powered recommendations!',
+    title: '🤖 Let AI Find Money For You',
+    description: 'Click here and watch AI instantly suggest the BEST job matches! This one feature helps recruiters double their placement rate. Try it now—you\'ll love it!',
     route: '/recommendation-agent',
     target: null,
     placement: 'center',
@@ -36,8 +36,8 @@ export const level2Steps: TourStep[] = [
   },
   {
     id: 'multi-job-submit',
-    title: 'Submit to Multiple Jobs',
-    description: 'Select your candidate and submit them to 3-5 matching roles at once. More submissions = higher placement odds!',
+    title: '🚀 The 5x Strategy (Game-Changer!)',
+    description: 'Here\'s what pros do: Submit one candidate to 3-5 matching jobs at once. Math = Simple: 5 submissions = 5x higher odds of earning that $5K+ commission. Do it!',
     route: '/recommendation-agent',
     target: null,
     placement: 'center',
@@ -46,8 +46,8 @@ export const level2Steps: TourStep[] = [
   },
   {
     id: 'add-second-candidate',
-    title: 'Build Your Pipeline',
-    description: 'Add your second candidate! The more quality candidates you submit, the more placements you\'ll earn.',
+    title: '💰 Double Your Pipeline = Double Your Income',
+    description: 'You\'ve got one candidate—amazing! Now add a second and you\'re building REAL earning momentum. Each quality candidate = another revenue stream. Keep going!',
     route: '/candidates',
     target: null,
     placement: 'center',
@@ -56,8 +56,8 @@ export const level2Steps: TourStep[] = [
   },
   {
     id: 'submission-history',
-    title: 'Track Your Submissions',
-    description: 'View all your submissions here. Monitor which ones are progressing and which need follow-up.',
+    title: '📈 Your Success Dashboard',
+    description: 'View all submissions here and see your growing pipeline! Track which candidates are heating up and which need attention. You\'re building something great!',
     route: '/recommendation-agent',
     target: null,
     placement: 'center',
@@ -66,8 +66,8 @@ export const level2Steps: TourStep[] = [
   },
   {
     id: 'level2-complete',
-    title: 'Level 2 Complete! 🚀',
-    description: 'You\'re building momentum! Submit 3+ candidates to unlock Level 3 and master pipeline management.',
+    title: '🔥 BRILLIANT! You\'re Building Serious Momentum!',
+    description: '🏆 Look at what you\'ve mastered:\n✅ AI-powered job matching\n✅ Multi-job submission strategy (5x technique!)\n✅ Pipeline building like a pro\n\n📊 LEVEL 3 AWAITS: You\'re ready to manage your pipeline like elite recruiters who close 50+ placements/year! Submit 3+ candidates to unlock Pipeline Mastery and learn how to never miss a money-making opportunity!',
     route: '/',
     target: null,
     placement: 'center',

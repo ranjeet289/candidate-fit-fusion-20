@@ -16,8 +16,8 @@ export interface TourStep {
 export const level4Steps: TourStep[] = [
   {
     id: 'level4-welcome',
-    title: 'Level 4: Outreach & Engagement! 💬',
-    description: 'Congratulations on your success! Now let\'s scale with automated outreach and engagement tools.',
+    title: '🤖 Level 4: You\'re Ready to Scale MASSIVELY!',
+    description: 'You\'ve proven yourself—placements are coming! Now here\'s how 6-figure recruiters operate: They automate outreach and let AI work 24/7. You\'re about to join their ranks!',
     route: '/',
     target: null,
     placement: 'center',
@@ -26,8 +26,8 @@ export const level4Steps: TourStep[] = [
   },
   {
     id: 'outreach-agent',
-    title: 'Meet the Outreach Agent',
-    description: 'AI-powered outreach to engage passive candidates. Reach 10x more candidates with personalized messages!',
+    title: '💬 Reach 10x More = Earn 10x More',
+    description: 'Meet your AI outreach assistant! While you manage your pipeline, it engages hundreds of candidates automatically. Set it up now—this is how pros scale income!',
     route: '/outreach-agent',
     target: null,
     placement: 'center',
@@ -36,8 +36,8 @@ export const level4Steps: TourStep[] = [
   },
   {
     id: 'candidate-sourcing',
-    title: 'Auto-Source Candidates',
-    description: 'Let AI find candidates from LinkedIn, job boards, and databases. Build your pipeline on autopilot!',
+    title: '🔍 Build Pipeline While You Sleep',
+    description: 'Let AI find top candidates from LinkedIn and job boards 24/7. Wake up to new opportunities daily! This is passive income building—automate it right now!',
     route: '/sourcing-agent',
     target: null,
     placement: 'center',
@@ -46,8 +46,8 @@ export const level4Steps: TourStep[] = [
   },
   {
     id: 'personalized-messages',
-    title: 'Craft Personalized Outreach',
-    description: 'AI generates custom messages for each candidate based on their profile and target job. High response rates!',
+    title: '✉️ AI Writes, You Earn',
+    description: 'AI crafts personalized messages that get 3x better responses. More engaged candidates = faster placements = bigger commissions. Let AI do the heavy lifting!',
     route: '/outreach-agent',
     target: null,
     placement: 'center',
@@ -56,8 +56,8 @@ export const level4Steps: TourStep[] = [
   },
   {
     id: 'automated-follow-ups',
-    title: 'Set Up Follow-Up Sequences',
-    description: 'Schedule automated follow-ups for candidates who don\'t respond. Stay top of mind without manual work!',
+    title: '⏰ Follow-Ups = 80% of Placements',
+    description: 'Here\'s a secret: Most placements need 2-3 follow-ups. Automate them and never lose a deal again! Set it once, earn forever. Smart recruiters always follow up!',
     route: '/outreach-agent',
     target: null,
     placement: 'center',
@@ -66,8 +66,8 @@ export const level4Steps: TourStep[] = [
   },
   {
     id: 'level4-complete',
-    title: 'Level 4 Complete! ⚡',
-    description: 'You\'re now scaling with automation! Get 3+ placements or 25+ submissions to unlock Level 5 - Power User!',
+    title: '⚡ PHENOMENAL! You\'re Scaling Like an Elite!',
+    description: '🏆 You\'ve unlocked massive potential:\n✅ 10x outreach with AI automation\n✅ 24/7 candidate sourcing\n✅ 3x better response rates\n✅ Never miss follow-ups = Never miss deals\n\n👑 FINAL LEVEL BECKONS: The elite 1% of recruiters use data analytics to optimize EVERYTHING and earn $100K+ annually! Get 3+ placements OR 25+ submissions to unlock Power User status and join the top earners!',
     route: '/',
     target: null,
     placement: 'center',
